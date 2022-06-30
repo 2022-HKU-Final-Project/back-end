@@ -23,7 +23,7 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html')),
     path('api/products', views.products),
     path('api/jobs', views.jobs),
-    path('api/job-filters', views.jobType),
+    path('api/job-filters', views.job_filters),
     path('api/job-categories', views.job_categories),
     path('api/staff-stories', views.staff_stories),
     path('api/byte-standards', views.byte_standards),

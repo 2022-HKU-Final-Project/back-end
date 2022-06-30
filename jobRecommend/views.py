@@ -6,7 +6,8 @@ import json
 
 
 def products(request):
-    return HttpResponse()
+    data = json.load(open('./Data/data.json', 'r'))['products']
+    return HttpResponse(json.dumps(data, ensure_ascii=False))
 
 
 def jobs(request):
@@ -45,7 +46,7 @@ def jobs(request):
     return HttpResponse(json.dumps(test, ensure_ascii=False))
 
 
-def jobType(request):
+def job_filters(request):
     test = {
         'city_list': [1,2,3],
         'job_type_list':[1,2,3]
