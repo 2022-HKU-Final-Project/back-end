@@ -32,7 +32,7 @@
       <div class="center-line"></div>
       <div class="item">
         <div class="title" style="line-height: 40px">Job Recommendation</div>
-        <div class="recommendation-box">Recommendation</div>
+        <div id="tst" class="recommendation-box">Recommendation</div>
       </div>
     </div>
     <div class="operate-btn">
@@ -151,6 +151,13 @@ export default {
     // 点击submit
     submit() {
       console.log(this.selfDescription);
+      this.request
+        .post("/recommend", this.selfDescription)
+        .then(response => {
+          this.result = response;
+          this.re = document.getElementById('tst');
+          this.re.innerHTML = this.result
+        });
     },
     //重置
     handleReset() {

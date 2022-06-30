@@ -87,7 +87,6 @@ export default {
       loading: false
     };
   },
-
   created() {
     const jobConfigRequest = this.request
       .get("/job-filters")
@@ -144,6 +143,7 @@ export default {
       this.fetchList();
     }
   },
+
   methods: {
     clearFilter() {
       if (this.job_category_id_list.length) {
@@ -159,6 +159,7 @@ export default {
       return this.request
         .post("/jobs", this.queryFilter)
         .then(response => {
+          console.log(response);
           if (this.results.count !== response.count) {
             this.currentPage = 1;
           }
@@ -170,6 +171,7 @@ export default {
         });
     }
   }
+
 };
 </script>
 <style lang="less" scoped>

@@ -1,8 +1,6 @@
 const path = require("path");
 module.exports = {
   lintOnSave: "warning",
-  outputDir: 'dist',
-  assetsDir: 'static',
   pluginOptions: {
     "style-resources-loader": {
       preProcessor: "less",
@@ -12,6 +10,9 @@ module.exports = {
       ],
     },
   },
+  publicPath: '/',
+  outputDir: 'dist',
+  assetsDir: 'static',
   devServer: {
     // proxy: "http://localhost:3000",
     proxy: "http://123.57.204.48:3000",
