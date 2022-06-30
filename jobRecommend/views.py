@@ -9,7 +9,12 @@ def products(request):
     return HttpResponse()
 
 
-def jobList(request):
+def jobs(request):
+    search_key = json.loads(request.body)['keyword']
+
+    # search_key 是 home 搜索内容, 如果为空则说明是首页直接跳转，无输入内容
+    print(search_key)
+
     test = {
         'count': 1,
         'city_list': [1,2,3],
@@ -70,7 +75,6 @@ def job_detail(request, id):
             },
             "description": "testtesttesttesttesttesttesttesttesttest",
             "requirement": "testtesttesttesttesttesttesttesttesttest"
-
         }
     }
     print(request.GET)

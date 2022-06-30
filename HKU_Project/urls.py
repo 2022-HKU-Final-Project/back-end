@@ -22,7 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', TemplateView.as_view(template_name='index.html')),
     path('api/products', views.products),
-    path('api/jobs', views.jobList),
+    path('api/jobs', views.jobs),
     path('api/job-filters', views.jobType),
     path('api/recommend', views.recommend),
     path('api/jobs/<int:id>', views.job_detail),
