@@ -99,3 +99,87 @@ def job_detail(request, id):
     }
     print(request.GET)
     return HttpResponse(json.dumps(test, ensure_ascii=False))
+
+
+def dashboard_education(request):
+    test = [
+        {
+          "education": "学历不限",
+          "num": 2000
+
+        },
+        {
+          "education": "初中及以下",
+          "num": 3028
+        },
+        {
+          "education": "中专及以下",
+          "num": 567
+        },
+        {
+          "education": "中专/中技",
+          "num": 2000
+        },
+        {
+          "education": "高中",
+          "num": 2000
+
+        }]
+
+    return HttpResponse(json.dumps(test, ensure_ascii=False))
+
+
+def dashboard_map(request):
+    test = [
+        {
+          "name": "北京",
+          "value": 540
+        },
+        {
+          "name": "天津",
+          "value": 130
+        }]
+
+    return HttpResponse(json.dumps(test, ensure_ascii=False))
+
+
+def dashboard_salary(request):
+    test = [
+        {
+          "job": "后端开发",
+          "salary": {
+              "1000-2000": 5,
+              "2000-3000": 4
+          }
+        },
+        {
+          "job": "初中及以下",
+          "salary": {
+              "1000-2000": 5,
+              "2000-3000": 4
+          }
+        },
+        {
+          "job": "中专及以下",
+          "salary": {
+              "1000-2000": 5,
+              "2000-3000": 4
+          }
+        },
+        {
+          "job": "中专/中技",
+          "salary": {
+              "1000-2000": 5,
+              "2000-3000": 4
+          }
+        },
+        {
+          "job": "高中",
+          "salary": {
+              "1000-2000": 5,
+              "2000-3000": 4
+          }
+
+        }]
+
+    return HttpResponse(json.dumps(test, ensure_ascii=False))
