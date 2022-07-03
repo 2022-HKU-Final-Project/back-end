@@ -8,10 +8,10 @@ import json
 
 cities = [{'code':1,'name':'北京'},{'code':2,'name':'上海'},{'code':3,'name':'深圳'}]
 
+
 def products(request):
     data = json.load(open('./Data/data.json', 'r'))['products']
     return HttpResponse(json.dumps(data, ensure_ascii=False))
-
 
 
 def jobs(request):
@@ -44,7 +44,6 @@ def jobs(request):
         'job_post_list':re
     }
     return HttpResponse(json.dumps(test, ensure_ascii=False))
-
 
 
 def job_filters(request):
