@@ -45,14 +45,14 @@
         <ul class="content-list">
           <li class="content-item" v-for="item in results.job_post_list" :key="item.id">
             <router-link :to="`/jobs/${item.id}`">
-              <h3 class="title">{{ item.title }}</h3>
+              <h3 class="title">{{ item.jobPosition}}</h3>
 
               <div class="subTitle">
-                <span class="city">{{ item.city_info.name }}</span>&nbsp;|
-                <span class="job_category">{{ item.job_category.name }}</span>&nbsp;|
+                <span class="city">{{item.jobWorkCity_format}}</span>&nbsp;|
+                <span class="job_category">{{ item.jobCate }}</span>&nbsp;|
                 <span class="recruitment_channel">社招</span>
               </div>
-              <p class="desc">{{ item.description }}</p>
+              <p class="desc">{{ item.jobDesc}}</p>
             </router-link>
           </li>
         </ul>
@@ -76,8 +76,8 @@ export default {
     return {
       searchKeyword: keyword || "",
       currentPage: 1,
-      job_category_id_list: job_category_id ? [job_category_id] : [],
-      jobCategories: [],
+      job_category_id_list:[1,2,3], //job_category_id ? [job_category_id] : [],
+      jobCategories: ['北京','北京','北京'],
       jobCities: [],
       location_code_list: [],
       cityList: [],
@@ -91,8 +91,13 @@ export default {
     const jobConfigRequest = this.request
       .get("/job-filters")
       .then(response => {
+        setTimeout(()=>{
         this.jobCities = response.city_list;
         this.jobCategories = response.job_type_list;
+        // this.job_category_id_list = response.job_type_id_list;
+        // this.location_code_list = response.city_id_list
+        console.log("response",response)
+      },0) 
       })
       .catch();
 
@@ -123,6 +128,7 @@ export default {
   },
   computed: {
     queryFilter() {
+      console.log("keyword",this.searchKeyword)
       return {
         job_category_id_list: this.job_category_id_list,
         location_code_list: this.location_code_list,
@@ -159,7 +165,7 @@ export default {
       return this.request
         .post("/jobs", this.queryFilter)
         .then(response => {
-          console.log(response);
+          console.log("also",response);
           if (this.results.count !== response.count) {
             this.currentPage = 1;
           }

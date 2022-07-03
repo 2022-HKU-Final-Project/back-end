@@ -44,8 +44,8 @@ export default {
     this.request
       .get(`/jobs/${id}`)
       .then(res => {
-        console.log(res);
-        console.log(res.job_post_detail.city_info.name);
+        console.log("res",res);
+        console.log("res2",res.job_post_detail.city_info.name);
         this.jobDetail = res.job_post_detail;
         loading.close();
       })

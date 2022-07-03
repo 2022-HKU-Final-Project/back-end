@@ -1,55 +1,58 @@
+from base64 import encode
+from curses import keyname
 from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from Backends.JobQuery import *
 import json
 # Create your views here.
 
+cities = [{'code':1,'name':'北京'},{'code':2,'name':'上海'},{'code':3,'name':'深圳'}]
 
 def products(request):
     data = json.load(open('./Data/data.json', 'r'))['products']
     return HttpResponse(json.dumps(data, ensure_ascii=False))
 
 
+
 def jobs(request):
+    json_body = request.body
+    print(json_body)
 
-    # search_key 是 home 搜索内容，如果为空则说明是首页直接跳转，无输入内容
-    search_key = json.loads(request.body)['keyword']
-    print(search_key)
+    # 把请求体的二进制数据转换为json格式
+    json_data = json.loads(json_body)
+    #get方法键值对方式获取值
 
-    # job_category_id_list 是 home 下方职位类别跳转，如果为空则说明不是点击下方职位类别跳转，直接忽略
-    print(json.loads(request.body)['job_category_id_list'])
-
+    key_word = json_data.get('keyword')
+    offset = json_data.get('offset')
+    if key_word == "":
+        print(" no key")
+        re = list(mycollect.find({},{"_id": 0}).limit(10).skip(offset))
+        
+    else:
+        job_category_id_list = json_data.get("job_category_id_list")
+        data = {
+            'jobPosition': key_word,
+            'jobWorkCity_format':{"$in":job_category_id_list},
+            
+        }
+        re = list(mycollect.find(data,{"_id": 0}).limit(10).skip(offset))
 
     test = {
-        'count': 1,
+        'count': 100,
         'city_list': [1,2,3],
         'job_type_list':[1,2,3],
-        'job_post_list':[
-            {
-                "id": 1,
-                "title": "测试",
-                "city_info": {
-                    "name": "南京"
-                },
-                "job_category": {
-                    "name": "程序猿"
-                },
-                "recruit_type": {
-                    "name": "正式"
-                },
-                "description": "testtesttesttesttesttesttesttesttesttest",
-                "requirement": "testtesttesttesttesttesttesttesttesttest"
-
-            }
-        ]
+        'job_post_list':re
     }
     return HttpResponse(json.dumps(test, ensure_ascii=False))
 
 
+
 def job_filters(request):
+
+    cities = list(mydb['cityinfo'].find({},{"_id": 0}))
     test = {
-        'city_list': [1,2,3],
-        'job_type_list':[1,2,3]
+        'city_list':cities,
+        'job_type_list':[{'id':1,'name':'算法'},{'id':2,'name':'后端'},{'id':3,'name':'前端'},]
     }
     return HttpResponse(json.dumps(test, ensure_ascii=False))
 
