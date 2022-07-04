@@ -1,20 +1,22 @@
 <template>
   <div class="job-detail">
-    <h1 class="job-detail-title">{{ jobDetail.title }}</h1>
+    <h1 class="job-detail-title">{{ jobDetail.incName }}</h1>
     <div class="job-detail-subTitle" v-if="jobDetail.id">
-      <span class="city_info">{{ jobDetail.city_info.name }}</span
+      <span class="city_info">{{ jobDetail.jobWorkCity_format }}</span
       >&nbsp;|
-      <span class="job_category">{{ jobDetail.job_category.name }}</span
+      <span class="job_category">{{ jobDetail.tier2-position }}</span
       >&nbsp;|
-      <span class="recruit_type">{{ jobDetail.recruit_type.name }}</span>
+      <span class="recruit_type">{{ jobDetail.tier1-position }}</span>
     </div>
     <div class="job-detail-description job-detail-block">
       <h2>职位描述</h2>
-      <pre class="textContent">{{ jobDetail.description }}</pre>
+      <pre class="textContent">{{ jobDetail.jobDesc }}</pre>
     </div>
     <div class="job-detail-requirement job-detail-block">
-      <h2>职位要求</h2>
-      <pre class="textContent">{{ jobDetail.requirement }}</pre>
+      <h2>职位学历要求</h2>
+      <pre class="textContent">{{ jobDetail.jobDiploma }}</pre>
+      <h2>职位年龄要求</h2>
+      <pre class="textContent">{{ jobDetail.jobWorkAge }}</pre>
     </div>
     <div class="job-detail-button job-detail-block">
       <bytedance-button @click="delivery" size="large">投递</bytedance-button>

@@ -83,6 +83,10 @@ def recommend(request):
 
 def job_detail(request, id):
     print(id)
+    data = {
+        'id': id
+    }
+    re = mycollect.find_one(data)
     test = {
         "job_post_detail": {
             "id": 1,
@@ -99,8 +103,7 @@ def job_detail(request, id):
             "requirement": "testtesttesttesttesttesttesttesttesttest"
         }
     }
-    print(request.GET)
-    return HttpResponse(json.dumps(test, ensure_ascii=False))
+    return HttpResponse(json.dumps(re, ensure_ascii=False))
 
 
 def dashboard_education(request):
