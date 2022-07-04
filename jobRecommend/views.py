@@ -4,14 +4,16 @@ from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from Backends.JobQuery import *
 import json
+import requests
 # Create your views here.
 
-cities = [{'code':1,'name':'北京'},{'code':2,'name':'上海'},{'code':3,'name':'深圳'}]
+model_url = 'http://localhost:8001/get_info'
 
 
 def products(request):
     data = json.load(open('./Data/data.json', 'r'))['products']
     return HttpResponse(json.dumps(data, ensure_ascii=False))
+
 
 
 def jobs(request):
@@ -49,6 +51,7 @@ def jobs(request):
 def job_filters(request):
 
     cities = list(mydb['cityinfo'].find({},{"_id": 0}))
+    # cate
     test = {
         'city_list':cities,
         'job_type_list':[{'id':1,'name':'算法'},{'id':2,'name':'后端'},{'id':3,'name':'前端'},]
@@ -72,13 +75,14 @@ def byte_standards(request):
 
 
 def recommend(request):
-    data = {
-        'jobPosition': list(request.POST.keys())[0]
-    }
-    re = mycollect.find_one(data, {"_id": 0})
-    print(re)
 
-    return HttpResponse(re)
+    content  = list(request.POST.keys())[0]
+    print(content)
+    data = {'content':content}
+    re = requests.get(model_url, params=data).json()
+    print(re['label'])
+
+    return HttpResponse(re['label'])
 
 
 def job_detail(request, id):

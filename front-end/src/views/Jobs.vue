@@ -94,8 +94,6 @@ export default {
         setTimeout(()=>{
         this.jobCities = response.city_list;
         this.jobCategories = response.job_type_list;
-        // this.job_category_id_list = response.job_type_id_list;
-        // this.location_code_list = response.city_id_list
         console.log("response",response)
       },0) 
       })
