@@ -104,8 +104,6 @@ def job_detail(request, id):
         }
     }
     print(re)
-    re['tier_second_position'] = re['tier2-position']
-    re['tier_first_position'] = re['tier1-position']
     return HttpResponse(json.dumps(re, ensure_ascii=False))
 
 

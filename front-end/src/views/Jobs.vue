@@ -49,7 +49,7 @@
 
               <div class="subTitle">
                 <span class="city">{{item.jobWorkCity_format}}</span>&nbsp;|
-                <span class="job_category">{{ item.tier1-position }}</span>&nbsp;|
+                <span class="job_category">{{ item.tier_first_position }}</span>&nbsp;|
                 <span class="recruitment_channel">社招</span>
               </div>
               <p class="desc">{{ item.jobDesc}}</p>
