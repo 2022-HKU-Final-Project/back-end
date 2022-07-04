@@ -36,7 +36,7 @@ def jobs(request):
             
         }
         re = list(mycollect.find(data,{"_id": 0}).limit(10).skip(offset))
-
+    print(re)
     test = {
         'count': 100,
         'city_list': [1,2,3],
@@ -75,7 +75,7 @@ def recommend(request):
     data = {
         'jobPosition': list(request.POST.keys())[0]
     }
-    re = mycollect.find_one(data)
+    re = mycollect.find_one(data, {"_id": 0})
     print(re)
 
     return HttpResponse(re)
@@ -84,9 +84,9 @@ def recommend(request):
 def job_detail(request, id):
     print(id)
     data = {
-        'id': id
+        'id': str(id)
     }
-    re = mycollect.find_one(data)
+    re = mycollect.find_one(data, {"_id": 0})
     test = {
         "job_post_detail": {
             "id": 1,
@@ -103,6 +103,9 @@ def job_detail(request, id):
             "requirement": "testtesttesttesttesttesttesttesttesttest"
         }
     }
+    print(re)
+    re['tier_second_position'] = re['tier2-position']
+    re['tier_first_position'] = re['tier1-position']
     return HttpResponse(json.dumps(re, ensure_ascii=False))
 
 

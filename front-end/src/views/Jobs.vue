@@ -45,11 +45,11 @@
         <ul class="content-list">
           <li class="content-item" v-for="item in results.job_post_list" :key="item.id">
             <router-link :to="`/jobs/${item.id}`">
-              <h3 class="title">{{ item.jobPosition}}</h3>
+              <h3 class="title">{{ item.incName}}</h3>
 
               <div class="subTitle">
                 <span class="city">{{item.jobWorkCity_format}}</span>&nbsp;|
-                <span class="job_category">{{ item.jobCate }}</span>&nbsp;|
+                <span class="job_category">{{ item.tier1-position }}</span>&nbsp;|
                 <span class="recruitment_channel">社招</span>
               </div>
               <p class="desc">{{ item.jobDesc}}</p>
