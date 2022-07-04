@@ -44,7 +44,7 @@
         <h2 class="content-title">开启新的职位 ({{ results.count }})</h2>
         <ul class="content-list">
           <li class="content-item" v-for="item in results.job_post_list" :key="item.id">
-            <router-link :to="`/jobs/${item.id}`">
+            <router-link :to="`/jobs/${(item.id)}`">
               <h3 class="title">{{ item.incName}}</h3>
 
               <div class="subTitle">

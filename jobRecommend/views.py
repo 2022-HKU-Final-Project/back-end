@@ -38,13 +38,13 @@ def jobs(request):
             
         }
         re = list(mycollect.find(data,{"_id": 0}).limit(10).skip(offset))
-    print(re)
     test = {
         'count': 100,
         'city_list': [1,2,3],
         'job_type_list':[1,2,3],
         'job_post_list':re
     }
+    print(re)
     return HttpResponse(json.dumps(test, ensure_ascii=False))
 
 

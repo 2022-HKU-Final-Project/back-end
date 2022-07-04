@@ -16,6 +16,12 @@ const routes = [{
         component: () =>
             import ( /* webpackChunkName: "Products" */ "../views/Recommend.vue")
     },
+	{  //echarts中nav配置页面
+	  path: '/frontPage',
+	  name: 'frontPage',
+	  component: () =>
+	      import ( /* webpackChunkName: "Products" */ "../views/frontpage.vue")
+	},
     {
         path: "/products",
         name: "products",

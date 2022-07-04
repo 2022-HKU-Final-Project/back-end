@@ -21,6 +21,7 @@
     "axios": "^0.19.2",
     "connect-history-api-fallback": "^1.6.0",
     "core-js": "^3.6.4",
+    "echarts": "^5.3.3",
     "element-ui": "^2.13.2",
     "express": "^4.17.1",
     "http-proxy-middleware": "^1.0.5",

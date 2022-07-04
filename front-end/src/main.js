@@ -34,7 +34,9 @@ if (process.env.NODE_ENV !== "production") {
   Vue.use(NotificationPlugin);
   Vue.config.devtools = true;
 }
-
+//使用echarts组件
+import * as echarts from 'echarts';
+Vue.prototype.$echarts = echarts
 // 使用loading 组件
 
 Vue.use(Loading);
