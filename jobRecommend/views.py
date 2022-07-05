@@ -73,21 +73,21 @@ def job_filters(request):
 
 def job_categories(request):
     data = json.load(open('./Data/data.json', 'r'))['jobCategories']
-    job = mydb['categories'].distinct("tier_first")
+    job = mydb['categories'].find({},{"_id": 0,"id":1,"tier_third":1})
     result = []
     count = 0
     for single_job in job:
         if count == 7:
             break
         result.append({
-            "id": str(count),
+            "id": single_job["id"],
             "en_name": "test",
-            "zh_name": single_job,
+            "zh_name": single_job["tier_third"],
             "image": data[(count % len(data))]['image']
         })
         count += 1
     result.append({
-        "id": str(count),
+        "id": -1,
         "en_name": "test",
         "zh_name": "全部",
         "image": data[(count % len(data))]['image']
