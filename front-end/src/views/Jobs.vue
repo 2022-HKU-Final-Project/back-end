@@ -24,7 +24,7 @@
             title="职位"
             ref="jobCategory"
             v-model="job_category_id_list"
-            :props="{ key: 'id', label: 'tier_first' }"
+            :props="{ key: 'id', label: 'tier_third' }"
             :data="jobCategories"
           ></checkbox-transfer>
         </div>

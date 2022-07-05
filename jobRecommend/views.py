@@ -18,21 +18,23 @@ def products(request):
 
 def jobs(request):
     json_body = request.body
-    print(json_body)
 
     # 把请求体的二进制数据转换为json格式
-    json_data = json.loads(json_body, encoding='utf-8')
+    json_data = json.loads(json_body)
     #get方法键值对方式获取值
-    print(json_data)
 
     key_word = json_data.get('keyword')
     offset = json_data.get('offset')
     if key_word == "":
-        print(" no key")
+        print("no key")
         re = list(mycollect.find({},{"_id": 0}).limit(10).skip(offset))
         
     else:
         job_category_id_list = json_data.get("job_category_id_list")
+        print(job_category_id_list)
+        jobs = list(mycollect['categories'].find({"id":{"$in": job_category_id_list}},{"_id": 0,"tier_third":1}))
+        print("jobs2",jobs)
+        # print(job_category_id_list)
         if job_category_id_list == []:
             data = {
                 'tier_first_position': key_word,
@@ -40,24 +42,28 @@ def jobs(request):
         else:
             data = {
             'tier_first_position': key_word,
-            'jobWorkCity_format': {"$in": job_category_id_list},
-            
+            'jobWorkCity_format': {"$in": job_category_id_list}
+
             }
-        re = list(mycollect.find(data, {"_id": 0}).limit(10).skip(offset))
+        re = list(mycollect.find({"$or":[data,{'tier_second_position': key_word,
+            'jobWorkCity_format': {"$in": job_category_id_list}},
+            {'tier_third_position': key_word,
+            'jobWorkCity_format': {"$in": job_category_id_list}}]}, {"_id": 0}).limit(10).skip(offset))
     test = {
         'count': 100,
         'city_list': [1,2,3],
         'job_type_list':[1,2,3],
         'job_post_list':re
     }
-    print(re)
+    # print(re)
     return HttpResponse(json.dumps(test, ensure_ascii=False))
 
 
 def job_filters(request):
 
     cities = list(mydb['cityinfo'].find({},{"_id": 0}))
-    categories = list(mydb['categories'].find({},{"_id": 0,"tier_first":1}))
+    categories = list(mydb['categories'].find({},{"_id": 0,"id":1,"tier_third":1}))
+    # print(categories)
     test = {
         'city_list':cities,
         'job_type_list':categories

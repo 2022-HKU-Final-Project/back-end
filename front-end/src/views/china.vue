@@ -3,7 +3,7 @@
       <div id="china_map"></div>
   </div>
 </template>
- 
+
 <script>
 // import echarts from "echarts";
 import * as echarts from 'echarts'
@@ -158,5 +158,4 @@ export default {
   	width: 100%;
   	height: 400px;
   }
- 
 </style>

@@ -14,7 +14,7 @@ import json
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = myclient["JobInfo"]
 
-mycollect = mydb['jobInfo']
+mycollect = mydb['jobinfo']
 
 # print(mycollect.find({"tier_first_position":"服务业"}).distinct("jobSalary_format"))
 # print(len(mycollect.find({"tier_first_position":"服务业"}).distinct("jobSalary_format")))
