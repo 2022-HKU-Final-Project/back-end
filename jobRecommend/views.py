@@ -95,47 +95,15 @@ def job_detail(request, id):
 
 
 def dashboard_education(request):
-    result = []
-    diploma = mycollect.distinct("jobDiploma")
-    for single_diploma in diploma:
-        number = len(list(mycollect.find({"jobDiploma": single_diploma})))
-        result.append({
-            "education": single_diploma,
-            "num": number
-        })
+    result = list(mydb['education'].find({}, {"_id": 0}))
     return HttpResponse(json.dumps(result, ensure_ascii=False))
 
 
 def dashboard_map(request):
-    result = []
-    province = mycollect.distinct("jobWorkProvince")
-    for single_province in province:
-        number = len(list(mycollect.find({"jobWorkProvince": single_province})))
-        result.append({
-            "name": single_province,
-            "value": number
-        })
+    result = list(mydb['map'].find({}, {"_id": 0}))
     return HttpResponse(json.dumps(result, ensure_ascii=False))
 
 
 def dashboard_salary(request):
-    salary_range_list = ["0-5000", "5000-10000", "10000-15000", "15000-20000", "20000+"]
-    result = []
-    job = mycollect.distinct("tier_first_position")
-    for single_job in job:
-        salary = {}
-        for i, salary_range in enumerate(salary_range_list):
-            if i == len(salary_range_list)-1:
-                left_ = int(salary_range[:-1])
-                number = len(list(mycollect.find({"tier_first_position": single_job, "jobSalary_format": {'$gte': left_}})))
-                salary[salary_range] = number
-            else:
-                left_ = int(salary_range.split('-')[0])
-                right_ = int(salary_range.split('-')[1])
-                number = len(list(mycollect.find({"tier_first_position": single_job, "jobSalary_format": {'$gte': left_, '$lt': right_}})))
-                salary[salary_range] = number
-        result.append({
-            "job": single_job,
-            "salary": salary
-        })
+    result = list(mydb['salary'].find({}, {"_id": 0}))
     return HttpResponse(json.dumps(result, ensure_ascii=False))
