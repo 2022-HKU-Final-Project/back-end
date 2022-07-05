@@ -91,105 +91,51 @@ def job_detail(request, id):
         'id': str(id)
     }
     re = mycollect.find_one(data, {"_id": 0})
-    test = {
-        "job_post_detail": {
-            "id": 1,
-            "city_info": {
-                "name": "南京"
-            },
-            "job_category": {
-                "name": "程序猿"
-            },
-            "recruit_type": {
-                "name": "正式"
-            },
-            "description": "testtesttesttesttesttesttesttesttesttest",
-            "requirement": "testtesttesttesttesttesttesttesttesttest"
-        }
-    }
-    print(re)
     return HttpResponse(json.dumps(re, ensure_ascii=False))
 
 
 def dashboard_education(request):
-    test = [
-        {
-          "education": "学历不限",
-          "num": 2000
-
-        },
-        {
-          "education": "初中及以下",
-          "num": 3028
-        },
-        {
-          "education": "中专及以下",
-          "num": 567
-        },
-        {
-          "education": "中专/中技",
-          "num": 2000
-        },
-        {
-          "education": "高中",
-          "num": 2000
-
-        }]
-
-    return HttpResponse(json.dumps(test, ensure_ascii=False))
+    result = []
+    diploma = mycollect.distinct("jobDiploma")
+    for single_diploma in diploma:
+        number = mycollect.find({"jobDiploma":single_diploma}).count()
+        result.append({
+            "education": single_diploma,
+            "num": number
+        })
+    return HttpResponse(json.dumps(result, ensure_ascii=False))
 
 
 def dashboard_map(request):
-    test = [
-        {
-          "name": "北京",
-          "value": 540
-        },
-        {
-          "name": "天津",
-          "value": 130
-        }]
-
-    return HttpResponse(json.dumps(test, ensure_ascii=False))
+    result = []
+    province = mycollect.distinct("jobWorkProvince")
+    for single_province in province:
+        number = mycollect.find({"jobWorkProvince": single_province}).count()
+        result.append({
+            "name": single_province,
+            "value": number
+        })
+    return HttpResponse(json.dumps(result, ensure_ascii=False))
 
 
 def dashboard_salary(request):
-    test = [
-        {
-          "job": "后端开发",
-          "salary": {
-              "1000-2000": 5,
-              "2000-3000": 4
-          }
-        },
-        {
-          "job": "初中及以下",
-          "salary": {
-              "1000-2000": 5,
-              "2000-3000": 4
-          }
-        },
-        {
-          "job": "中专及以下",
-          "salary": {
-              "1000-2000": 5,
-              "2000-3000": 4
-          }
-        },
-        {
-          "job": "中专/中技",
-          "salary": {
-              "1000-2000": 5,
-              "2000-3000": 4
-          }
-        },
-        {
-          "job": "高中",
-          "salary": {
-              "1000-2000": 5,
-              "2000-3000": 4
-          }
-
-        }]
-
-    return HttpResponse(json.dumps(test, ensure_ascii=False))
+    salary_range_list = ["0-5000", "5000-10000", "10000-15000", "15000-20000", "20000+"]
+    result = []
+    job = mycollect.distinct("tier_first_position")
+    for single_job in job:
+        salary = {}
+        for i, salary_range in enumerate(salary_range_list):
+            if i == len(salary_range_list)-1:
+                left_ = salary_range[:-1]
+                number = len(list(mycollect.find({"tier_first_position": single_job, "jobSalary_format": {'$gte': left_}})))
+                salary[salary_range] = number
+            else:
+                left_ = salary_range.split('-')[0]
+                right_ = salary_range.split('-')[1]
+                number = len(list(mycollect.find({"tier_first_position": single_job, "jobSalary_format": {'$gte': left_, '$lt': right_}})))
+                salary[salary_range] = number
+        result.append({
+            "job": single_job,
+            "salary": salary
+        })
+    return HttpResponse(json.dumps(result, ensure_ascii=False))
