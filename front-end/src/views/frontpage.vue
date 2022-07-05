@@ -49,6 +49,18 @@
 			Chartsfuct() {
 					var dom = this.$refs.chartBar;
 					var myChart = this.$echarts.init(dom);
+					this.request2
+				.post("/dashboard/education", this.queryFilter)
+				.then(response => {
+					// console.log(response);
+					// let seriesData = [60, 132, 89, 134, 60, 85, 105];
+					// let yAxisData = ['物联网设备', '工控控制设备', '网络安全专用产品', '智能融合终端', '能源控制器', '5G CPE', '5G 模组'];
+					let seriesData = [];
+					let yAxisData = [];
+					for(var i = 0; i < response.length; i++){
+						yAxisData.push(response[i].education);
+						seriesData.push(response[i].num);
+					}
 					let colorArray = [
 					    {
 					        top: '#056CBB', //黄
@@ -79,8 +91,6 @@
 					        bottom: 'rgba(11,42,84,.3)',
 					    },
 					];
-					let seriesData = [60, 132, 89, 134, 60, 85, 105];
-					let yAxisData = ['物联网设备', '工控控制设备', '网络安全专用产品', '智能融合终端', '能源控制器', '5G CPE', '5G 模组'];
 					var option = {
 					    tooltip: {
 					        show: true,
@@ -219,16 +229,36 @@
 					    ],
 					};
 					myChart.setOption(option);
-				},
+				})
+				.catch(() => {
+				
+				});
+					
+			},
 			ChartsPie() {
 				var dom = this.$refs.chartPie;
 				var myChart = this.$echarts.init(dom);
-				var option = {
+				this.request2
+				.post("/dashboard/salary", this.queryFilter)
+				.then(response => {
+					// console.log(response);
+					var salary = response[0].salary;
+					var data = []
+					var legend = []
+					for(var key in salary){
+						// console.log(key, salary[key])
+						data.push({
+							name: key,
+							value: salary[key]
+						});
+						legend.push(key)
+					}
+					var option = {
 					legend: {
 						orient: 'horizontal',
 						bottom: 5,
 						 itemWidth:10,
-						data: ['rose1', 'rose2', 'rose3', 'rose4'], //有数据
+						data: legend, //有数据
 						textStyle: {
 							color: "#fff",
 							fontSize: 10
@@ -239,47 +269,12 @@
 						formatter: '{a} <br/>{b} : {c} ({d}%)'
 					},
 					series: [{
-						name: '半径模式',
+						name: '薪水',
 						type: 'pie',
 						radius: ['30%', '80%'],
 						center: ['50%', '50%'],
 						roseType: 'radius',
-						data: [{
-								value: 1,
-								name: 'rose1',
-								itemStyle: {
-									color: "#0733F1",
-									borderColor: "#0733F1",
-									show: false
-
-								}
-							},
-							{
-								value: 2,
-								name: 'rose2',
-								itemStyle: {
-									color: "#00B0E3",
-									borderColor: "#00B0E3"
-								}
-							},
-							{
-								value: 3,
-								name: 'rose3',
-								itemStyle: {
-									color: "#3D61FF",
-									borderColor: "#3D61FF"
-								}
-							},
-							{
-								value: 4,
-								name: 'rose4',
-								itemStyle: {
-									color: "#22E5F1",
-									borderColor: "#22E5F1"
-								}
-							},
-
-						],
+						data: data,
 						label: {
 							show: false,
 							normal: {
@@ -295,7 +290,11 @@
 						},
 					}]
 				};
-				myChart.setOption(option);
+					myChart.setOption(option);
+				})
+				.catch(() => {
+				
+				});
 			}
 		},
 		mounted() {

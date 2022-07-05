@@ -101,6 +101,8 @@ def dashboard_education(request):
 
 def dashboard_map(request):
     result = list(mydb['map'].find({}, {"_id": 0}))
+    for item in result:
+        item['name'] = item['name'].strip('省').strip('自治区').strip('市').strip('回族')
     return HttpResponse(json.dumps(result, ensure_ascii=False))
 
 

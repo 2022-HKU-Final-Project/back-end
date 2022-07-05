@@ -14,6 +14,7 @@ import "@/helper/registerGlobalComponents.js";
 
 // 引入请求实例
 import request from "@/helper/request";
+import request2 from "@/helper/request2";
 
 // 日期格式化过滤器
 
@@ -49,6 +50,7 @@ Vue.filter("formatDate", formatDate);
 
 Vue.config.productionTip = false;
 Vue.prototype.request = request;
+Vue.prototype.request2 = request2;
 
 new Vue({
   router,
