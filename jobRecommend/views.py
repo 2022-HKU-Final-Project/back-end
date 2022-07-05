@@ -98,7 +98,7 @@ def dashboard_education(request):
     result = []
     diploma = mycollect.distinct("jobDiploma")
     for single_diploma in diploma:
-        number = mycollect.find({"jobDiploma":single_diploma}).count()
+        number = len(list(mycollect.find({"jobDiploma": single_diploma})))
         result.append({
             "education": single_diploma,
             "num": number
@@ -110,7 +110,7 @@ def dashboard_map(request):
     result = []
     province = mycollect.distinct("jobWorkProvince")
     for single_province in province:
-        number = mycollect.find({"jobWorkProvince": single_province}).count()
+        number = len(list(mycollect.find({"jobWorkProvince": single_province})))
         result.append({
             "name": single_province,
             "value": number
@@ -126,12 +126,12 @@ def dashboard_salary(request):
         salary = {}
         for i, salary_range in enumerate(salary_range_list):
             if i == len(salary_range_list)-1:
-                left_ = salary_range[:-1]
+                left_ = int(salary_range[:-1])
                 number = len(list(mycollect.find({"tier_first_position": single_job, "jobSalary_format": {'$gte': left_}})))
                 salary[salary_range] = number
             else:
-                left_ = salary_range.split('-')[0]
-                right_ = salary_range.split('-')[1]
+                left_ = int(salary_range.split('-')[0])
+                right_ = int(salary_range.split('-')[1])
                 number = len(list(mycollect.find({"tier_first_position": single_job, "jobSalary_format": {'$gte': left_, '$lt': right_}})))
                 salary[salary_range] = number
         result.append({
