@@ -16,14 +16,14 @@ def products(request):
     return HttpResponse(json.dumps(data, ensure_ascii=False))
 
 
-
 def jobs(request):
     json_body = request.body
     print(json_body)
 
     # 把请求体的二进制数据转换为json格式
-    json_data = json.loads(json_body)
+    json_data = json.loads(json_body, encoding='utf-8')
     #get方法键值对方式获取值
+    print(json_data)
 
     key_word = json_data.get('keyword')
     offset = json_data.get('offset')
@@ -33,18 +33,24 @@ def jobs(request):
         
     else:
         job_category_id_list = json_data.get("job_category_id_list")
-        data = {
-            'jobPosition': key_word,
-            'jobWorkCity_format':{"$in":job_category_id_list},
+        if job_category_id_list == []:
+            data = {
+                'tier_first_position': key_word,
+            }
+        else:
+            data = {
+            'tier_first_position': key_word,
+            'jobWorkCity_format': {"$in": job_category_id_list},
             
-        }
-        re = list(mycollect.find(data,{"_id": 0}).limit(10).skip(offset))
+            }
+        re = list(mycollect.find(data, {"_id": 0}).limit(10).skip(offset))
     test = {
         'count': 100,
         'city_list': [1,2,3],
         'job_type_list':[1,2,3],
         'job_post_list':re
     }
+    print(re)
     return HttpResponse(json.dumps(test, ensure_ascii=False))
 
 
