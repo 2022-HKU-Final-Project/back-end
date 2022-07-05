@@ -24,7 +24,7 @@
             title="职位"
             ref="jobCategory"
             v-model="job_category_id_list"
-            :props="{ key: 'id', label: 'name' }"
+            :props="{ key: 'id', label: 'tier_first' }"
             :data="jobCategories"
           ></checkbox-transfer>
         </div>
@@ -76,8 +76,8 @@ export default {
     return {
       searchKeyword: keyword || "",
       currentPage: 1,
-      job_category_id_list:[1,2,3], //job_category_id ? [job_category_id] : [],
-      jobCategories: ['北京','北京','北京'],
+      job_category_id_list:job_category_id ? [job_category_id] : [],
+      jobCategories: [],
       jobCities: [],
       location_code_list: [],
       cityList: [],

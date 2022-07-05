@@ -1,5 +1,6 @@
 from base64 import encode
 from curses import keyname
+from unicodedata import category
 from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from Backends.JobQuery import *
@@ -44,18 +45,17 @@ def jobs(request):
         'job_type_list':[1,2,3],
         'job_post_list':re
     }
-    print(re)
     return HttpResponse(json.dumps(test, ensure_ascii=False))
 
 
 def job_filters(request):
 
     cities = list(mydb['cityinfo'].find({},{"_id": 0}))
-    # cate
+    categories = list(mydb['categories'].find({},{"_id": 0,"tier_first":1}))
     test = {
         'city_list':cities,
-        'job_type_list':[{'id':1,'name':'算法'},{'id':2,'name':'后端'},{'id':3,'name':'前端'},]
-    }
+        'job_type_list':categories
+        }
     return HttpResponse(json.dumps(test, ensure_ascii=False))
 
 
