@@ -73,7 +73,7 @@ def job_filters(request):
 
 def job_categories(request):
     data = json.load(open('./Data/data.json', 'r'))['jobCategories']
-    job = mydb['cityinfo'].distinct("tier_first")
+    job = mydb['categories'].distinct("tier_first")
     result = []
     count = 0
     for single_job in job:
