@@ -67,7 +67,27 @@ def job_filters(request):
 
 def job_categories(request):
     data = json.load(open('./Data/data.json', 'r'))['jobCategories']
-    return HttpResponse(json.dumps(data, ensure_ascii=False))
+    job = mydb['cityinfo'].distinct("tier_first")
+    result = []
+    count = 0
+    for single_job in job:
+        if count == 7:
+            break
+        result.append({
+            "id": str(count),
+            "en_name": "test",
+            "zh_name": single_job,
+            "image": data[(count % len(data))]['image']
+        })
+        count += 1
+    result.append({
+        "id": str(count),
+        "en_name": "test",
+        "zh_name": "全部",
+        "image": data[(count % len(data))]['image']
+    })
+
+    return HttpResponse(json.dumps(result, ensure_ascii=False))
 
 
 def staff_stories(request):
@@ -82,7 +102,7 @@ def byte_standards(request):
 
 def recommend(request):
 
-    content  = list(request.POST.keys())[0]
+    content = list(request.POST.keys())[0]
     print(content)
     data = {'content':content}
     re = requests.get(model_url, params=data).json()
