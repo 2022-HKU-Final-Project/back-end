@@ -8,6 +8,7 @@
 @desc: 
 """
 import pymongo
+from tqdm import tqdm
 import json
 
 
@@ -39,12 +40,18 @@ def generate_education():
 
 def generate_map():
     result = []
+    job = mycollect.distinct("tier_first_position")
     province = mycollect.distinct("jobWorkProvince")
-    for single_province in province:
-        number = len(list(mycollect.find({"jobWorkProvince": single_province})))
+    print(job)
+    print(province)
+    for single_job in tqdm(job):
+        province_info = {}
+        for single_province in province:
+            number = len(list(mycollect.find({"jobWorkProvince": single_province, "tier_first_position": single_job})))
+            province_info[single_province] = number
         result.append({
-            "name": single_province,
-            "value": number
+            "job": single_job,
+            "city": province_info
         })
     collections = mydb.list_collection_names()
     if 'map' in collections:
@@ -84,8 +91,8 @@ def generate_salary():
 
 
 if __name__ == '__main__':
-    generate_education()
+    # generate_education()
     generate_map()
-    generate_salary()
+    # generate_salary()
 
 
