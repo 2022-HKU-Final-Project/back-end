@@ -25,37 +25,79 @@ def jobs(request):
 
     key_word = json_data.get('keyword')
     offset = json_data.get('offset')
+    job_category_id_list = json_data.get("job_category_id_list")
+    location_code_list = json_data.get("location_code_list")
+    re = []
+    print("job_category_id_list",job_category_id_list)
+    print("location_code_list",location_code_list)
     if key_word == "":
-        print("no key")
-        re = list(mycollect.find({},{"_id": 0}).limit(10).skip(offset))
-        
-    else:
-        job_category_id_list = json_data.get("job_category_id_list")
-        print(job_category_id_list)
-        jobs = list(mycollect['categories'].find({"id":{"$in": job_category_id_list}},{"_id": 0,"tier_third":1}))
-        print("jobs2",jobs)
-        # print(job_category_id_list)
-        if job_category_id_list == []:
-            data = {
-                'tier_first_position': key_word,
-            }
+        if len(job_category_id_list) == 0:
+            if len(location_code_list) == 0:
+                re = list(mycollect.find({},{"_id": 0}).limit(10).skip(offset))
+            else:
+                citie_dic = list(mydb['cityinfo'].find({"code":{"$in": location_code_list}},{"_id": 0,"name":1}))
+                cities = []
+                for item in citie_dic:
+                    cities.append(item['name'])
+                re = list(mycollect.find({"jobWorkProvince":{"$in": cities}},{"_id": 0}).limit(10).skip(offset))
         else:
-            data = {
-            'tier_first_position': key_word,
-            'jobWorkCity_format': {"$in": job_category_id_list}
+            if len(location_code_list) == 0:
+                cats_dic = list(mydb['categories'].find({"id":{"$in": job_category_id_list}},{"_id": 0,"tier_third":1}))
+                cats = []
+                for item in cats_dic:
+                    cats.append(item['tier_third'])
+                re = list(mydb['jobinfo'].find({"tier_third_position":{"$in": cats}},{"_id": 0}).limit(10).skip(offset))
+            else:
+                cats_dic = list(mydb['categories'].find({"id":{"$in": job_category_id_list}},{"_id": 0,"tier_third":1}))
+                cats = []
+                for item in cats_dic:
+                    cats.append(item['tier_third'])
+                citie_dic = list(mydb['cityinfo'].find({"code":{"$in": location_code_list}},{"_id": 0,"name":1}))
+                cities = []
+                for item in citie_dic:
+                    cities.append(item['name'])
+                print("cats",cats)
+                print("cities",cities)
+                re = list(mydb['jobinfo'].find({"tier_third_position":{"$in": cats},"jobWorkProvince":{"$in": cities}},{"_id": 0}).limit(10).skip(offset))
+                print(re)
 
-            }
-        re = list(mycollect.find({"$or":[data,{'tier_second_position': key_word,
-            'jobWorkCity_format': {"$in": job_category_id_list}},
-            {'tier_third_position': key_word,
-            'jobWorkCity_format': {"$in": job_category_id_list}}]}, {"_id": 0}).limit(10).skip(offset))
+       
+    else:
+        if len(job_category_id_list) == 0:
+            if len(location_code_list) == 0:
+                re = list(mycollect.find({"$or":[{"tier_first_position":key_word},{"tier_second_position":key_word},{"tier_third_position":key_word}]},{"_id": 0}).limit(10).skip(offset))
+                print(re)
+            else:
+                citie_dic = list(mydb['cityinfo'].find({"code":{"$in": location_code_list}},{"_id": 0,"name":1}))
+                cities = []
+                for item in citie_dic:
+                    cities.append(item['name'])
+                re = list(mycollect.find({"jobWorkProvince":{"$in": cities},"$or":[{"tier_first_position":key_word},{"tier_second_position":key_word},{"tier_third_position":key_word}]},{"_id": 0}).limit(10).skip(offset))
+        else:
+            if len(location_code_list) == 0:
+                cats_dic = list(mydb['categories'].find({"id":{"$in": job_category_id_list},},{"_id": 0,"tier_third":1}))
+                cats = []
+                for item in cats_dic:
+                    cats.append(item['tier_third'])
+                re = list(mydb['jobinfo'].find({"tier_third_position":{"$in": cats},"$or":[{"tier_first_position":key_word},{"tier_second_position":key_word},{"tier_third_position":key_word}]},{"_id": 0}).limit(10).skip(offset))
+            else:
+                cats_dic = list(mydb['categories'].find({"id":{"$in": job_category_id_list}},{"_id": 0,"tier_third":1}))
+                cats = []
+                for item in cats_dic:
+                    cats.append(item['tier_third'])
+                citie_dic = list(mydb['cityinfo'].find({"code":{"$in": location_code_list}},{"_id": 0,"name":1}))
+                cities = []
+                for item in citie_dic:
+                    cities.append(item['name'])
+
+                re = list(mydb['jobinfo'].find({"tier_third_position":{"$in": cats},"jobWorkProvince":{"$in": cities},"$or":[{"tier_first_position":key_word},{"tier_second_position":key_word},{"tier_third_position":key_word}]},{"_id": 0}).limit(10).skip(offset))
+       
     test = {
         'count': 100,
         'city_list': [1,2,3],
         'job_type_list':[1,2,3],
         'job_post_list':re
     }
-    # print(re)
     return HttpResponse(json.dumps(test, ensure_ascii=False))
 
 
@@ -63,7 +105,6 @@ def job_filters(request):
 
     cities = list(mydb['cityinfo'].find({},{"_id": 0}))
     categories = list(mydb['categories'].find({},{"_id": 0,"id":1,"tier_third":1}))
-    # print(categories)
     test = {
         'city_list':cities,
         'job_type_list':categories
