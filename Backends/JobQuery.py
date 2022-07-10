@@ -8,6 +8,7 @@
 @desc: 
 """
 import pymongo
+import sys
 from tqdm import tqdm
 import json
 
@@ -90,9 +91,51 @@ def generate_salary():
         mydb.salary.insert_one(item)
 
 
+def generate_job_count():
+    jobs = mycollect.distinct("tier_first_position")
+    result = []
+    for single_job in tqdm(jobs, desc="handling"):
+        count = len(list(mycollect.find({"tier_first_position": single_job})))
+        result.append({
+            "name": single_job,
+            "value": count
+        })
+    collections = mydb.list_collection_names()
+    if 'jobCount' in collections:
+        mydb['jobCount'].drop()
+    for item in result:
+        mydb.jobCount.insert_one(item)
+
+
+def generate_job_diploma():
+    jobs = mycollect.distinct("tier_first_position")
+    diploma = mycollect.distinct("jobDiploma")
+    result = []
+    for single_job in tqdm(jobs, desc="handling"):
+        temp_diploma = []
+        for single_diploma in diploma:
+            temp_re = list(mycollect.find({"tier_first_position": single_job, "jobDiploma": single_diploma}))
+            for item in temp_re:
+                temp_diploma.append({
+                    single_diploma: item['jobSalary_format']
+                })
+
+        result.append({
+            "name": single_job,
+            "data": temp_diploma
+        })
+    collections = mydb.list_collection_names()
+    if 'jobDiploma' in collections:
+        mydb['jobDiploma'].drop()
+    for item in result:
+        mydb.jobDiploma.insert_one(item)
+
+
 if __name__ == '__main__':
     # generate_education()
-    generate_map()
+    # generate_map()
     # generate_salary()
+    # generate_job_count()
+    generate_job_diploma()
 
 
