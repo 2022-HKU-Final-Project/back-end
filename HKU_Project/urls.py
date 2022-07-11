@@ -29,6 +29,8 @@ urlpatterns = [
     path('api/job-categories', views.job_categories),
     path('api/dashboard/education', views.dashboard_education),
     path('api/dashboard/map', views.dashboard_map),
+    path('api/dashboard/jobDiploma', views.dashboard_diploma),
+    path('api/dashboard/jobCount', views.dashboard_count),
     path('api/dashboard/salary', views.dashboard_salary),
     # path('jobs', TemplateView.as_view(template_name='index.html')),
     # path('recommend', TemplateView.as_view(template_name='index.html')),

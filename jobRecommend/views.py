@@ -188,3 +188,13 @@ def dashboard_map(request):
 def dashboard_salary(request):
     result = list(mydb['salary'].find({}, {"_id": 0}))
     return HttpResponse(json.dumps(result, ensure_ascii=False))
+
+
+def dashboard_diploma(request):
+    result = list(mydb['jobDiploma'].find({}, {"_id": 0}))
+    return HttpResponse(json.dumps(result, ensure_ascii=False))
+
+
+def dashboard_count(request):
+    result = list(mydb['jobCount'].find({}, {"_id": 0}))
+    return HttpResponse(json.dumps(result, ensure_ascii=False))
