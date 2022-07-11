@@ -1,6 +1,6 @@
 <template>
   <div id="china_map_box">
-      <div id="china_map"></div>
+      <div id="china_map" ></div>
   </div>
 </template>
 
@@ -11,144 +11,157 @@ import '../helper/china.js'
 export default {
   data() {
     return {
-      //echart 配制option  
-      options: {
-        tooltip: {
-          triggerOn: "mousemove",   //mousemove、click
-          padding:8,
-          borderWidth:1,
-          borderColor:'#409eff',
-          backgroundColor:'rgba(255,255,255,0.7)',
-          textStyle:{
-            color:'#ffffff',
-            fontSize:13
-          },
-          // formatter: function(e, t, n) {
-          //   let data = e.data;
-          //   //模拟数据
-          //   data.specialImportant = Math.random()*1000 | 0;
-          //   data.import = Math.random()*1000 | 0;
-          //   data.compare = Math.random()*1000 | 0;
-          //   data.common = Math.random()*1000 | 0;
-          //   data.specail = Math.random()*1000 | 0;
- 
-          //   let context = `
-          //      <div>
-          //          <p><b style="font-size:15px;">${data.name}</b>(2020年第一季度)</p>
-          //          <p class="tooltip_style"><span class="tooltip_left">事件总数</span><span class="tooltip_right">${data.value}</span></p>
-          //          <p class="tooltip_style"><span class="tooltip_left">特别重大事件</span><span class="tooltip_right">${data.specialImportant}</span></p>
-          //          <p class="tooltip_style"><span class="tooltip_left">重大事件</span><span class="tooltip_right">${data.import}</span></p>
-          //          <p class="tooltip_style"><span class="tooltip_left">较大事件</span><span class="tooltip_right">${data.compare}</span></p>
-          //          <p class="tooltip_style"><span class="tooltip_left">一般事件</span><span class="tooltip_right">${data.common}</span></p>
-          //          <p class="tooltip_style"><span class="tooltip_left">特写事件</span><span class="tooltip_right">${data.specail}</span></p>
-          //      </div>
-          //   `
-          //   return context;
-          // }
-        },
-        visualMap: {
-          show:true,
-          left: 26,
-          bottom: 40,
-          showLabel:true,
-		  textStyle:{
-		    color:'#ffffff',
-		    fontSize:13
-		  },
-          pieces: [
-            {
-              gte: 100,
-              label: ">= 1000",
-              color: "#1f307b"
-            },
-            {
-              gte: 500,
-              lt: 999,
-              label: "500 - 999",
-              color: "#3c57ce"
-            },
-            {
-              gte: 100,
-              lt:499,
-              label: "100 - 499",
-              color: "#6f83db"
-            },
-            {
-              gte: 10,
-              lt: 99,
-              label: "10 - 99",
-              color: "#9face7"
-            },
-            {
-              lt:10,
-              label:'<10',
-              color: "#bcc5ee"
-            }
-          ]
-        },
-        geo: {
-          map: "china",
-          scaleLimit: {
-            min: 1,
-            max: 2
-          },
-          zoom: 1,
-          top: 50,
-          label: {
-            normal: {
-              show:true,
-              fontSize: "14",
-              color: "rgba(255, 255, 255, 0.7)"
-            }
-          },
-          itemStyle: {
-            normal: {
-              //shadowBlur: 50,
-              //shadowColor: 'rgba(0, 0, 0, 0.2)',
-              borderColor: "rgba(0, 0, 0, 0.2)"
-            },
-            emphasis: {
-              areaColor: "#f2d5ad",
-              shadowOffsetX: 0,
-              shadowOffsetY: 0,
-              borderWidth: 0
-            }
-          }
-        },
-        series: [
-          {
-            name: "突发事件",
-            type: "map",
-            geoIndex: 0,
-            data:[]
-          }
-        ]
-      },
-    };
+		echartData:[],
+		ShowData:[]
+      //echart 配制option
+	  }
+  },
+  props:["MapData"],
+  watch:{
+	  MapData:function(newval){
+		  this.echartData = newval
+		  this.initEchartMap()
+	  }
+	  
   },
   methods: {
     //初始化中国地图
     initEchartMap() {
-      let mapDiv = document.getElementById('china_map');
-      let myChart = echarts.init(mapDiv);
-      this.request2
-        .post("/dashboard/map", this.queryFilter)
-        .then(response => {
-          console.log(response);
-          this.options.series[0]['data'] = response;
-          console.log(this.options);
-          myChart.setOption(this.options);
-        })
-        .catch(() => {
+	  console.log(this.echartData)
+	  let arr = []
+	  	    for (let key in this.echartData) {
+	  	      arr.push({
+	  	        name: key,  // label 字段
+	  	        value: this.echartData[key]   // value字段
+	  	      })
+	  	    }
+			 this.ShowData = JSON.parse(JSON.stringify(arr))
+			var that = this
+			let mapDiv = document.getElementById('china_map');
+			let myChart = echarts.init(mapDiv);
+			var option = {
+          tooltip: {
+              triggerOn: "mousemove",
+              formatter: function(e, t, n) {
+                  return '.5' == e.value ? e.name + "：有疑似病例" : e.seriesName + "<br />" + e.name + "：" + e.value
+              }
+          }, 
+          visualMap: {//左边的图标
+              min: 0,
+              max: 1500,
+              left: 26,
+              bottom: 30,
+              showLabel: !0,
+			  textStyle:{
+				  color:"#fff"
+			  },
+              text: ["高", "低"],
+              inRange: {
+                color: ["#DCEDFF", "#DCEDFF", "#A7D6FF", "#68B1FF", "#3193EE"]
+              },
+              // pieces: [{
+              //     gt: 10000,
+              //     label: "> 10000人",
+              //     color: "#3193EE"
+              // }, {
+              //     gte: 1000,
+              //     lte: 10000,
+              //     label: "1000 - 10000人",
+              //     color: "#68B1FF"
+              // }, {
+              //     gte: 100,
+              //     lt: 1000,
+              //     label: "100 - 1000人",
+              //     color: "#A7D6FF"
+              // }, {
+              //     gt: 1,
+              //     lt: 100,
+              //     label: "1 - 100人",
+              //     color: "#DCEDFF"
+              // }, {
+              //     value: 0,
+              //     label: "0",
+              //     color: "#DCEDFF"
+              // }],
+              show: !0
+          },
+          grid: [{
+                      right: '5%',
+                      top: '20%',
+                      bottom: '10%',
+                      width: '20%'
+                  },
+              
+              ],
           
-      });
+          geo: {
+              map: "china",
+              // right:'25%',
+              // left:'18%',
+              center: [105, 26.71],
+              roam: !1,
+              scaleLimit: {//通过鼠标控制的缩放
+                  min: 1,
+                  max: 2
+              },
+              zoom: 1.1,//当前缩放比例
+              top: 120,//组件离容器上方的距离
+              label: {
+                  normal: {
+                      show: !0,
+                      fontSize: "14",
+                      color: "rgba(0,0,0,0.7)"
+                  }
+              },
+      
+              itemStyle: {
+                  normal: {
+                      //shadowBlur: 50,
+                      //shadowColor: 'rgba(0, 0, 0, 0.2)',
+                      borderColor: "rgba(0, 0, 0, 0.5)"
+                  },
+                  emphasis: {
+                      areaColor: "#f2d5ad",//鼠标放上去的颜色
+                      shadowOffsetX: 0,
+                      shadowOffsetY: 0,
+                      borderWidth: 0
+                  }
+              }
+          },
+          series: [{
+              name: "职位数",
+              type: "map",
+              geoIndex: 0,
+              data: that.ShowData}]
+          // },
+          // {
+          //         name: '哈喽喽',
+          //         type: 'scatter',
+          //         itemStyle: itemStyle,
+          //         data: window.dataList
+          //     }
+          // ]
+      }
+			console.log(that.ShowData)
+			 console.log(option)
+			 myChart.setOption(option);
+      // this.request3
+      //   .get("/m1/1260169-0-default/getMap")
+      //   .then(response => {
+      //     console.log(response[0].city);
+      //    
+      //     console.log(this.options);
+      //     myChart.setOption(this.options);
+      //   })
+      //   .catch(() => {
+          
+      // });
     },
   },
-  created() {
-    
-  },
   mounted() {
-    this.initEchartMap();
+    this.$nextTick(()=>{
+       this.initEchartMap();
+   })
   }
 };
 </script>

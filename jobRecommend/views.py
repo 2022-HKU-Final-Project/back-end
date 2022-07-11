@@ -176,12 +176,11 @@ def dashboard_map(request):
     result = list(mydb['map'].find({}, {"_id": 0}))
     new_result = []
     for item in result:
-        temp_dict = {'job': item['job'], 'city': []}
+        temp_dict = {'job': item['job'], 'city': {}}
         for province in item['city']:
             new_province = province.strip('省').strip('自治区').strip('市').strip('回族')
-            temp_dict['city'].append({new_province: item['city'][province]})
+            temp_dict['city'][new_province] = item['city'][province]
         new_result.append(temp_dict)
-
     return HttpResponse(json.dumps(new_result, ensure_ascii=False))
 
 

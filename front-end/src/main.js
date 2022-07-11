@@ -1,6 +1,6 @@
 import Vue from "vue";
 
-// 按需引入 element-ui 组件
+// 引入 element-ui 组件
 import "element-ui/lib/theme-chalk/index.css";
 import "./helper/registerElementComponents.js";
 
@@ -14,7 +14,9 @@ import "@/helper/registerGlobalComponents.js";
 
 // 引入请求实例
 import request from "@/helper/request";
-import request2 from "@/helper/request2";
+//import request2 from "@/helper/request2";
+import request3 from "@/helper/request3";
+
 
 // 日期格式化过滤器
 
@@ -31,28 +33,28 @@ import Message from "@/components/message";
 import NotificationPlugin from "./helper/notification.plugin";
 
 if (process.env.NODE_ENV !== "production") {
-  Vue.createElement = new Vue().$createElement;
-  Vue.use(NotificationPlugin);
-  Vue.config.devtools = true;
+    Vue.createElement = new Vue().$createElement;
+    Vue.use(NotificationPlugin);
+    Vue.config.devtools = true;
 }
 //使用echarts组件
 import * as echarts from 'echarts';
 Vue.prototype.$echarts = echarts
-// 使用loading 组件
+    // 使用loading 组件
 
 Vue.use(Loading);
 Vue.use(PopupProgress);
 Vue.use(Message);
 
 // 注册日期格式化过滤器
-
 Vue.filter("formatDate", formatDate);
 
 Vue.config.productionTip = false;
 Vue.prototype.request = request;
-Vue.prototype.request2 = request2;
+//Vue.prototype.request2 = request2;
+Vue.prototype.request3 = request3;
 
 new Vue({
-  router,
-  render: (h) => h(App),
+    router,
+    render: (h) => h(App),
 }).$mount("#app");
