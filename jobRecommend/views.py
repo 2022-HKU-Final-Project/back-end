@@ -167,11 +167,6 @@ def job_detail(request, id):
     return HttpResponse(json.dumps(re, ensure_ascii=False))
 
 
-def dashboard_education(request):
-    result = list(mydb['education'].find({}, {"_id": 0}))
-    return HttpResponse(json.dumps(result, ensure_ascii=False))
-
-
 def dashboard_map(request):
     result = list(mydb['map'].find({}, {"_id": 0}))
     new_result = []

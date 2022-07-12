@@ -27,7 +27,6 @@ urlpatterns = [
     path('api/recommend', views.recommend),
     path('api/jobs/<int:id>', views.job_detail),
     path('api/job-categories', views.job_categories),
-    path('api/dashboard/education', views.dashboard_education),
     path('api/dashboard/Map', views.dashboard_map),
     path('api/dashboard/heatmap', views.dashboard_diploma),
     path('api/dashboard/jobCount', views.dashboard_count),
