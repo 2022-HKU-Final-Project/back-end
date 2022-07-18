@@ -11,12 +11,13 @@ import pymongo
 import sys
 from tqdm import tqdm
 import json
+from Backends.generateJobInfo import *
 
 
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = myclient["JobInfo"]
 
-mycollect = mydb['jobInfo']
+mycollect = mydb['jobinfo']
 
 # print(mycollect.find({"tier_first_position":"服务业"}).distinct("jobSalary_format"))
 # print(len(mycollect.find({"tier_first_position":"服务业"}).distinct("jobSalary_format")))
@@ -131,11 +132,22 @@ def generate_job_diploma():
         mydb.jobDiploma.insert_one(item)
 
 
+def handle_new_data(job_title, raw_data_path, save_path):
+
+    df_data = generate_final_data(job_title, raw_data_path, save_path)
+    processed_json = json.loads(df_data.T.to_json()).values()
+    mycollect.insert_many(processed_json)
+
+
 if __name__ == '__main__':
     # generate_education()
     # generate_map()
     # generate_salary()
     # generate_job_count()
-    generate_job_diploma()
+    # generate_job_diploma()
+    save_file_path = './final_data.csv'
+    job_title_info = './new_tier1-tier2-tier3.csv'
+    raw_data = './all_data.csv'
+    handle_new_data(job_title_info, raw_data, save_file_path)
 
 
