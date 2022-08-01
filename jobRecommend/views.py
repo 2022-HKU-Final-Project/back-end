@@ -148,7 +148,7 @@ def byte_standards(request):
 
 
 def recommend(request):
-
+    print(json.loads(request.body))
     content = list(request.POST.keys())[0]
     print(content)
     data = {'content':content}
@@ -168,6 +168,7 @@ def job_detail(request, id):
 
 
 def dashboard_map(request):
+    print('entering')
     result = list(mydb['map'].find({}, {"_id": 0}))
     new_result = []
     for item in result:

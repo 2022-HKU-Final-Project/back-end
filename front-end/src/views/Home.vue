@@ -11,7 +11,7 @@
           playsinline
           autoplay
           poster="//sf3-ttcdn-tos.pstatp.com/obj/ttfe/ATSX/mainland/video-poster_1576231362701.png"
-          src="//sf1-ttcdn-tos.pstatp.com/obj/ttfe/ATSX/mainland/gongquhunjian_1080.min.mp4"
+          src="../assets/homepage_video.mp4"
           tabindex="-1"
         ></video>
       </div>

@@ -1,6 +1,6 @@
 <template>
   <div class="logo">
-    <img src="@/assets/logo.png" width="150px" height="120px">
+    <img src="@/assets/logo.png" width="85px" height="70px" />
   </div>
 </template>
 <script>
@@ -9,8 +9,8 @@ export default {
   props: {
     isTransparent: {
       type: Boolean,
-      default: false
-    }
-  }
+      default: false,
+    },
+  },
 };
 </script>

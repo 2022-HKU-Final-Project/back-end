@@ -66,33 +66,31 @@ export default {
   methods: {
     getMap() {
       var that = this;
-      this.request3
-        .get("/dashboard/Map") //地图请求地址
-        .then((response) => {
-          var index = 0;
-          // console.log(response)
-          for (var i = 0; i < response.length; i++) {
-            if (response[i].job == that.showData) {
-              index = i;
-            } else {
-              continue;
-            } //判断当前展示的数据类型
-          }
-          that.MapData = response[index].city;
-          // let arr = []
-          // 	    for (let key in echartsData) {
-          // 	      arr.push({
-          // 	        name: key,  // label 字段
-          // 	        value: echartsData[key]   // value字段
-          // 	      }
-          // 	    }
-          // 		that.MapData = arr
-        });
+      this.request3.get("/dashboard/Map").then((response) => {
+        var index = 0;
+        // console.log(response)
+        for (var i = 0; i < response.length; i++) {
+          if (response[i].job == that.showData) {
+            index = i;
+          } else {
+            continue;
+          } //判断当前展示的数据类型
+        }
+        that.MapData = response[index].city;
+        // let arr = []
+        // 	    for (let key in echartsData) {
+        // 	      arr.push({
+        // 	        name: key,  // label 字段
+        // 	        value: echartsData[key]   // value字段
+        // 	      }
+        // 	    }
+        // 		that.MapData = arr
+      });
     },
     getPoint() {
       var that = this;
       this.request3
-        .get("/dashboard/heatmap") //heatmap请求地址
+        .get("/dashboard/heatmap") //热力图
         .then((response) => {
           var index = 0;
           // console.log(response)
@@ -101,14 +99,14 @@ export default {
               index = i;
             } else {
               continue;
-            } //判断当前展示的数据类型
+            }
           }
           that.Pointdata = response[index];
           // console.log(that.Pointdata)
         });
     },
     getIndex() {
-      //获取饼状图数据
+      //获取饼图数据
       this.pushData = [];
       this.content = {
         name: "总数",
@@ -117,7 +115,7 @@ export default {
       // console.log(this.showData)
       var that = this;
       this.request3
-        .get("/dashboard/jobCount") //右下角pie chart请求地址
+        .get("/dashboard/jobCount") //右下角饼图
         .then((response) => {
           // console.log(that.showData)
           // console.log(response)
@@ -129,7 +127,7 @@ export default {
               index = i;
             } else {
               continue;
-            } //判断当前展示的数据类型
+            }
           }
           that.occupationData = response[index];
           that.content.value -= that.occupationData.value;
@@ -142,7 +140,7 @@ export default {
       var myChart = this.$echarts.init(dom);
       var that = this;
       this.request3
-        .get("/dashboard/heatmap") //左上角bar chart接口地址，同右上角heatmap地址一样
+        .get("/dashboard/heatmap") //左上角柱状图接口地址，同右上角热力图
         .then((response) => {
           var index = 0;
           for (var i = 0; i < response.length; i++) {
@@ -150,7 +148,7 @@ export default {
               index = i;
             } else {
               continue;
-            } //判断当前展示的数据类型
+            }
           }
           let yAxisData = [];
 
@@ -346,7 +344,7 @@ export default {
       var myChart = this.$echarts.init(dom);
       var that = this;
       this.request3
-        .get("/dashboard/salary") //左下角star chart地址
+        .get("/dashboard/salary") //左下角雷达图
         .then((response) => {
           var index = 0;
           // console.log(response)
@@ -355,7 +353,7 @@ export default {
               index = i;
             } else {
               continue;
-            } //判断当前展示的数据类型
+            }
           }
           // console.log(response);
           var salary = response[index].salary;
@@ -368,6 +366,12 @@ export default {
               value: salary[key],
             });
             AllData.push(salary[key]);
+          }
+          var max = AllData[0];
+          for (var j = 0; j < AllData.length; j++) {
+            if (AllData[j] > max) {
+              max = AllData[j];
+            }
           }
           console.log(AllData);
           const color = ["#4A99FF", "#4BFFFC"]; //线条边框颜色
@@ -405,7 +409,7 @@ export default {
             // console.log(key, salary[key])
             indicator.push({
               name: key,
-              max: 10000,
+              max: max + 2000,
             });
           }
           var option = {

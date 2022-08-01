@@ -13,15 +13,19 @@ import {
   Message,
   Button,
   Checkbox,
+  Dialog,
   MessageBox,
   Progress,
   Notification,
   Carousel,
-  CarouselItem
+  CarouselItem,
+  InputNumber,
 } from "element-ui";
 
 Vue.use(Checkbox);
 Vue.use(Form);
+Vue.use(Dialog);
+Vue.use(InputNumber);
 Vue.use(FormItem);
 Vue.use(Input);
 Vue.use(Select);

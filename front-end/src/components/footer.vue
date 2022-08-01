@@ -2,20 +2,19 @@
   <div class="footer">
     <div class="footer-content-column">
       <logo :is-transparent="true"></logo>
-      <p class="title">© 2012-2020 北京字节跳动科技有限公司</p>
-      <p class="title">京公网安备 11000002002023号 I 京ICP备12025439号-3</p>
+      <p class="title">©求贤若渴招聘协助有限公司</p>
     </div>
     <div class="footer-content-column">
       <div class="title">Contact us</div>
-      <p>关于投递</p>
-      <p>关于投递</p>
+      <p>qiuxianruokes@gmail.com</p>
+      <p></p>
     </div>
     <div class="footer-content-column">
-      <div class="title">企业官网</div>
-      <p>字节跳动</p>
+      <div class="title">官网</div>
+      <p>求贤若渴</p>
     </div>
     <div class="footer-content-column">
-      <div class="title">实时动态与招聘信息，请关注我们</div>
+      <div class="title">实时动态与招聘信息，请持续关注我们</div>
       <ul class="footer-content-column__contact">
         <!-- <li class="contact-item wechat">
           <svg class="octicon octicon-mark-github v-align-middle" height="32" viewBox="0 0 16 16" version="1.1" width="32" aria-hidden="true"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
